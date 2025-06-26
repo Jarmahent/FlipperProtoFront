@@ -44,7 +44,7 @@
               </div>
               <div class="mb-2">
                 <label class="form-label">Listed Date/Time</label>
-                <input v-model="form.listed_datetime" type="datetime-local" class="form-control" required />
+                <input v-model="form.listed_datetime" type="datetime-local" class="form-control" />
               </div>
               <div class="mb-2">
                 <label class="form-label">Sold Date/Time</label>
@@ -136,7 +136,7 @@ async function submitListing() {
     if (payload.sold_datetime) {
       payload.sold_datetime = new Date(payload.sold_datetime).toISOString()
     }
-    await superagent.post('http://localhost:8080/listing/v1').send(payload)
+    await superagent.post('http://localhost:8080/listings/v1').send(payload)
     // Refresh list
     await fetchListings()
     closeModal()
@@ -148,7 +148,7 @@ async function submitListing() {
 async function fetchListings() {
   loading.value = true
   try {
-    const res = await superagent.get('http://localhost:8080/listing/v1')
+    const res = await superagent.get('http://localhost:8080/listings/v1')
     listings.value = Array.isArray(res.body) ? res.body : []
   } catch (err) {
     listings.value = []

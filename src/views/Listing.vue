@@ -34,7 +34,7 @@
         </div>
         <div class="mb-3">
           <label class="form-label">Listed Date/Time</label>
-          <input v-model="form.listed_datetime" type="datetime-local" class="form-control" required />
+          <input v-model="form.listed_datetime" type="datetime-local" class="form-control" />
         </div>
         <div class="mb-3">
           <label class="form-label">Sold Date/Time (optional)</label>
@@ -76,9 +76,9 @@ function selectPlatform(p) {
 }
 
 function platformLabel() {
-  if (platform.value === 'ebay') return 'eBay'
-  if (platform.value === 'facebook') return 'Facebook Marketplace'
-  if (platform.value === 'craigslist') return 'Craigslist'
+  if (platform.value === 'ebay') return 'EBAY'
+  if (platform.value === 'facebook') return 'MAKRETPLACE'
+  if (platform.value === 'craigslist') return 'CRAIGSLIST'
   return ''
 }
 
@@ -88,12 +88,12 @@ async function submitListing() {
     if (!part_id) return alert('No part selected!')
     const payload = {
       part_id,
-      platform: platform.value,
+      platform: platform.value.toUpperCase(),
       ...form.value,
       listed_datetime: form.value.listed_datetime ? new Date(form.value.listed_datetime).toISOString() : null,
       sold_datetime: form.value.sold_datetime ? new Date(form.value.sold_datetime).toISOString() : null
     }
-    await superagent.post('http://localhost:8080/listing/v1').send(payload)
+    await superagent.post('http://localhost:8080/listings/v1').send(payload)
     step.value = 3
   } catch (err) {
     alert('Failed to submit listing (placeholder).')
